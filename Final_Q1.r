@@ -2,6 +2,7 @@ library(tidyverse)
 library(ggplot2)
 library(reshape2)
 library(corrplot)
+library(janitor)
 
 path <- "/users/nikithathota/documents/New_Nutrition_Physical_Activity_Obesity_Clean.csv"  # adjust if needed
 raw <- readr::read_csv(path) %>% clean_names()
