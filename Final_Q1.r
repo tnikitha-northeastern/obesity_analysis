@@ -164,30 +164,41 @@ ggplot(low10_2023, aes(x = state, y = obesity_pct, fill = obesity_pct)) +
 ##H₁ (Alternative): The mean obesity prevalence in 2023 is significantly different from the mean prevalence in 2011.
 
 ##TWO WAY ANOVA TEST : 
+df_subset <- df_by_age_year %>% filter(year %in% c(2011, 2023))
 anova_two_way <- aov(value ~ factor(year) * factor(age), data = df_subset)
 summary(anova_two_way)
-##Df Sum Sq Mean Sq
-##factor(year)             12  340.7    28.4
-##factor(age)               5 2823.2   564.6
-##factor(year):factor(age) 60   25.3     0.4
+# Df Sum Sq Mean Sq
+# factor(year)              1  109.6  109.58
+# factor(age)               5  426.2   85.24
+# factor(year):factor(age)  5    2.4    0.48
+
+#### Hypotheses
+##H₀ (Null): There is a statistically significant change in mean obesity prevalence over time (2011–2023).
+##H₁ (Alternative):  There is no statistically significant change in mean obesity prevalence over time (2011–2023).
+anova_two_way <- aov(value ~ factor(year) * factor(age), data = df_by_age_year)
+summary(anova_two_way)
+# Df Sum Sq Mean Sq
+# factor(year)             12  344.4    28.7
+# factor(age)               5 2861.6   572.3
+# factor(year):factor(age) 60   24.3     0.4
   
 ## H₀ (Null): There is no statistically significant difference in the mean obesity prevalence among the four designated U.S. Census regions.
 ##H₁ (Alternative): At least one U.S. Census region exhibits a mean obesity prevalence that is statistically different from the others.
 ##  TWO WAY ANOVA TEST : 
-anova_regional <- aov(regional_pct ~ factor(region) * factor(year), data = regional_year) summary(anova_regional)
+anova_regional <- aov(regional_pct ~ factor(region) * factor(year), data = regional_year) 
 summary(anova_regional)
 # Df Sum Sq Mean Sq
-  # factor(region)               3  231.3   77.11
-  # factor(year)                12  198.9   16.57
-  # factor(region):factor(year) 36    4.7    0.13
+# factor(region)               3  337.7  112.55
+# factor(year)                12  238.2   19.85
+# factor(region):factor(year) 36    6.6    0.18
   
 ## H₀ (Null): There is no significant difference in mean obesity prevalence among the different age groups.
 ##H₁ (Alternative): There is a significant difference in mean obesity prevalence among at least two of the age groups.
 anova_age <- aov(value ~ factor(age), data = df)
- summary(anova_age)
+summary(anova_age)
 # Df Sum Sq Mean Sq F value Pr(>F)    
-# factor(age)    5 153608   30722    1238 <2e-16 ***
-#   Residuals   4274 106094      25                   
+# factor(age)    5 157386   31477    1258 <2e-16 ***
+#   Residuals   4284 107152      25                   
 # ---
 #   Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
 
