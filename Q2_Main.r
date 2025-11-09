@@ -119,15 +119,5 @@ chisq.test(table(raw$occupation, raw$bmi_category))
 # X-squared = 365.41, df = 20, p-value < 2.2e-16
 
 
-# Logistic regression
-glm_model <- multinom(bmi_category ~ . - person_id, data = train)
-
-# Compare accuracy
-# 0.9733333
-mean(predict(glm_model, test) == test$bmi_category)
-# 0.8933333
-mean(predict(rf_model, test) == test$bmi_category)
-
-
 
 
