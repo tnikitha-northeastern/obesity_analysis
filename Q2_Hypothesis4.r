@@ -54,6 +54,13 @@ cluster_summary <- plot_data %>%
   )
 
 print(cluster_summary)
+# A tibble: 4 × 6
+# Cluster avg_sleep avg_stress avg_activity avg_quality avg_BMI
+#         <int>  <dbl>     <dbl>        <dbl>       <dbl>   <dbl>
+# 1       1      6.07       8            90          6       3   
+# 2       2      6.29       7.34         38.7        5.91    2.15
+# 3       3      8.22       3.03         55.3        8.97    1.93
+# 4       4      7.33       4.84         66.1        7.61    1.38
 
 anova_result <- aov(bmi_category_num ~ as.factor(Cluster), data = plot_data)
 summary(anova_result)
