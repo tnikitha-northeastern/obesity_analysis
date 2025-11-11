@@ -202,3 +202,20 @@ summary(anova_age)
 # ---
 #   Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
 
+
+anova_region <- aov(regional_pct ~ factor(region), data = regional_year )
+summary(anova_region)
+# Df Sum Sq Mean Sq F value Pr(>F)    
+# factor(region)  3  337.7   112.5   22.07  4e-09 ***
+#   Residuals      48  244.8     5.1                   
+# ---
+#   Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+
+anova_year<- aov(value ~ factor(year), data = df)
+summary(anova_year)
+# Df Sum Sq Mean Sq F value Pr(>F)    
+# factor(year)   12  18943  1578.6   27.49 <2e-16 ***
+#   Residuals    4277 245594    57.4                   
+# ---
+#   Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
