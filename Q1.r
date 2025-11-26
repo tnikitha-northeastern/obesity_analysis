@@ -298,75 +298,18 @@ describe(df$value)
 
 # ---- SUMMARY BY AGE GROUP ----
 age_summary <- df %>%
-  group_by(age) %>%
-  summarise(
-    mean = mean(value, na.rm = TRUE),
-    median = median(value, na.rm = TRUE),
-    sd = sd(value, na.rm = TRUE),
-    min = min(value, na.rm = TRUE),
-    max = max(value, na.rm = TRUE),
-    IQR = IQR(value, na.rm = TRUE),
-    n = n(),
-    .groups = "drop"
-  )
+  count(age) %>%
+  arrange(age)
 
-age_summary %>% arrange(desc(mean))
+age_summary
 
 
 # ---- SUMMARY BY YEAR ----
 year_summary <- df %>%
-  group_by(year) %>%
-  summarise(
-    mean = mean(value, na.rm = TRUE),
-    median = median(value, na.rm = TRUE),
-    sd = sd(value, na.rm = TRUE),
-    min = min(value, na.rm = TRUE),
-    max = max(value, na.rm = TRUE),
-    IQR = IQR(value, na.rm = TRUE),
-    n = n(),
-    .groups = "drop"
-  )
+  count(year) %>%
+  arrange(year)
 
-year_summary
-# year  mean median    sd   min   max   IQR     n
-# <dbl> <dbl>  <dbl> <dbl> <dbl> <dbl> <dbl> <int>
-#   1  2011  27.5   28.3  6.90   9.3  41    8.68   318
-# 2  2012  27.9   28.8  7.10   9    43.4  7.87   318
-# 3  2013  28.4   29.4  7.27  10    46.2  8.67   318
-# 4  2014  28.9   29.8  7.30  10.6  43.9  9.15   318
-# 5  2015  29.1   29.8  7.37  10.2  44.7  9.27   318
-# 6  2016  29.6   30.2  7.50   8.9  47.5  9.38   318
-# 7  2017  30.5   31.4  7.76   9.5  47.1  9.5    318
-# 8  2018  31.1   31.7  7.72  10.2  48.2  9.75   318
-# 9  2019  31.9   32.4  7.39  12    50.2  9.68   318
-# 10  2020  32.0   32.4  7.75  10.9  49.2  9.95   318
-# 11  2021  33.5   33.8  8.14  12.8  59.7 11.2    318
-# 12  2022  33.7   34.3  8.07   3.8  57.6 11.6    318
-# 13  2023  33.6   33.7  7.88  13    49.5 10.9    318
-
-# ---- SUMMARY BY REGION (using your regional_year dataset) ----
-region_summary <- regional_year %>%
-  group_by(region) %>%
-  summarise(
-    mean = mean(regional_pct, na.rm = TRUE),
-    median = median(regional_pct, na.rm = TRUE),
-    sd = sd(regional_pct, na.rm = TRUE),
-    min = min(regional_pct, na.rm = TRUE),
-    max = max(regional_pct, na.rm = TRUE),
-    IQR = IQR(regional_pct, na.rm = TRUE),
-    n = n(),
-    .groups = "drop"
-  )
-
-region_summary
-# A tibble: 4 × 8
-# region     mean median    sd   min   max   IQR     n
-# <chr>     <dbl>  <dbl> <dbl> <dbl> <dbl> <dbl> <int>
-#   1 Midwest    32.2   32.2  2.62  28.4  35.8  3.56    13
-# 2 Northeast  27.4   27.4  1.85  24.8  29.9  3.49    13
-# 3 South      33.5   33.3  2.41  29.8  36.8  3.81    13
-# 4 West       27.6   27.2  2.17  24.6  30.9  2.62    13
-
+year_summary # 318 per each year.
 
 unique(df$state)
 
