@@ -11,6 +11,14 @@ raw <- readr::read_csv(path) %>% clean_names()
 
 # Logistic regression
 glm_model <- multinom(bmi_category ~ . - person_id, data = train)
+glm_model_lifestyle <- multinom(bmi_category ~ sleep_duration + stress_level + physical_activity_level, data = train)
+
+glm_model_lifestyle_summary <- summary(glm_model_lifestyle)
+z_values <- glm_model_lifestyle_summary$coefficients / glm_model_lifestyle_summary$standard.errors
+p_values <- 2 * (1 - pnorm(abs(z_values)))
+
+glm_model_lifestyle_age <- multinom(bmi_category ~ sleep_duration + stress_level + physical_activity_level + age, data = train)
+glm_model_age <- glm(bmi_category ~ age,  data = train)
 
 # Compare accuracy
 # 0.9733333
@@ -20,7 +28,10 @@ mean(predict(rf_model, test) == test$bmi_category)
 # 0.9866667
 mean(predict(rf_cv, test) == test$bmi_category)
 
+mean(predict(glm_model_lifestyle, test) == test$bmi_category)
+mean(predict(glm_model_lifestyle_age, test) == test$bmi_category)
 
+mean(predict(glm_model_age, test) == test$bmi_category)
 
 # Create dummy output columns
 df <- raw %>%
@@ -52,6 +63,8 @@ test <- test %>%
 # Build formula (multi-output)
 predictors <- names(train)[!names(train) %in% c("bmi_category","Class_1","Class_2","Class_3", "person_id")]
 formula <- as.formula(paste("Class_1 + Class_2 + Class_3 ~", paste(predictors, collapse = " + ")))
+predictors <- names(train)[names(train) %in% c("sleep_duration", "stress_level", "physical_activity_level")]
+formula <- 'Class_1 + Class_2 + Class_3 ~ sleep_duration + stress_level + physical_activity_level'
 
 # Train network
 nn_model <- neuralnet(
@@ -63,7 +76,7 @@ nn_model <- neuralnet(
 )
 plot(nn_model)
 
-nn_pred <- compute(nn_model, test[, predictors])$net.result
+nn_pred <- neuralnet::compute(nn_model, test[, predictors])$net.result
 
 # Convert probabilities to predicted class index
 pred_class <- apply(nn_pred, 1, which.max)

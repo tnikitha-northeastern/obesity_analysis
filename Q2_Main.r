@@ -119,5 +119,86 @@ chisq.test(table(raw$occupation, raw$bmi_category))
 # X-squared = 365.41, df = 20, p-value < 2.2e-16
 
 
+## -----------------------------
+## DESCRIPTIVE STATISTICS
+## -----------------------------
+
+library(tidyverse)
+library(janitor)
+library(psych)      # for describe()
+library(ggplot2)
+library(corrplot)
+
+# Basic structure
+cat("Number of Rows:", nrow(raw), "\n")
+cat("Number of Columns:", ncol(raw), "\n")
+
+str(raw)
+
+# Missing values summary
+cat("\n--- Missing Values per Column ---\n")
+print(colSums(is.na(raw)))
+
+# Summary for numeric variables only
+numeric_vars <- raw %>% select(where(is.numeric))
+cat("\n--- Summary of Numeric Variables ---\n")
+summary(numeric_vars)
+
+# Detailed numeric statistics (mean, sd, skewness, etc.)
+cat("\n--- Detailed Numeric Descriptives (psych::describe) ---\n")
+describe(numeric_vars)
+
+# Frequency tables for categorical variables
+cat("\n--- Frequency Tables for Categorical Variables ---\n")
+cat("BMI Category:\n")
+print(table(raw$bmi_category))
+
+if("gender" %in% colnames(raw)) {
+  cat("\nGender:\n")
+  print(table(raw$gender))
+}
+
+if("occupation" %in% colnames(raw)) {
+  cat("\nOccupation:\n")
+  print(table(raw$occupation))
+}
+
+if("sleep_duration" %in% colnames(raw)) {
+  cat("\nSleep Duration Distribution:\n")
+  print(summary(raw$sleep_duration))
+}
+
+if("stress_level" %in% colnames(raw)) {
+  cat("\nStress Level Distribution:\n")
+  print(summary(raw$stress_level))
+}
+
+if("physical_activity_level" %in% colnames(raw)) {
+  cat("\nPhysical Activity Distribution:\n")
+  print(summary(raw$physical_activity_level))
+}
+
+# Correlation Matrix (numeric variables only)
+cat("\n--- Correlation Matrix ---\n")
+cor_matrix <- cor(numeric_vars, use = "pairwise.complete.obs")
+print(cor_matrix)
+
+corrplot(cor_matrix, method = "color", type = "upper",
+         tl.col = "black", tl.cex = 0.7)
+
+# Plot distributions for key predictors
+ggplot(raw, aes(x = sleep_duration)) +
+  geom_histogram(binwidth = 1, fill = "#69b3a2", color = "black") +
+  labs(title = "Distribution of Sleep Duration (hours)")
+
+ggplot(raw, aes(x = stress_level)) +
+  geom_bar(fill = "#ff8c00") +
+  labs(title = "Distribution of Stress Levels")
+
+ggplot(raw, aes(x = physical_activity_level)) +
+  geom_bar(fill = "#4682b4") +
+  labs(title = "Physical Activity Level Distribution")
+
+
 
 
