@@ -64,6 +64,17 @@ rf_cv$bestTune       # best mtry value
 rf_cv$finalModel     # actual randomForest object
 plot(rf_cv)
 
+
+control_all_features <- trainControl(method = "cv", number = 5)
+rf_cv_all_features <- train(bmi_category ~ ., data = raw, method = "rf", trControl = control_all_features)
+rf_cv_all_features
+rf_cv_all_features$results        # shows accuracy for each mtry
+rf_cv_all_features$bestTune       # best mtry value
+rf_cv_all_features$finalModel     # actual randomForest object
+plot(rf_cv_all_features)
+
+
+
 # Random Forest 
 # 
 # 374 samples
@@ -140,7 +151,7 @@ cat("\n--- Missing Values per Column ---\n")
 print(colSums(is.na(raw)))
 
 # Summary for numeric variables only
-numeric_vars <- raw %>% select(where(is.numeric))
+numeric_vars <- raw %>% select(where(is.numeric), -person_id)
 cat("\n--- Summary of Numeric Variables ---\n")
 summary(numeric_vars)
 
@@ -201,4 +212,7 @@ ggplot(raw, aes(x = physical_activity_level)) +
 
 
 
+library(dplyr)
+library(psych)
+library(corrplot)
 

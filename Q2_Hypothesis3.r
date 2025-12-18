@@ -24,9 +24,11 @@ glm_model_age <- glm(bmi_category ~ age,  data = train)
 # 0.9733333
 mean(predict(glm_model, test) == test$bmi_category)
 # 0.8933333
-mean(predict(rf_model, test) == test$bmi_category)
+mean(predict(rf_model_all_features, test) == test$bmi_category)
 # 0.9866667
 mean(predict(rf_cv, test) == test$bmi_category)
+mean(predict(rf_cv_all_features, test) == test$bmi_category)
+
 
 mean(predict(glm_model_lifestyle, test) == test$bmi_category)
 mean(predict(glm_model_lifestyle_age, test) == test$bmi_category)
